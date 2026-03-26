@@ -1,0 +1,109 @@
+name: fynix
+description: Fynix — Gamified multi-sport fitness app for Guatemala and Latin America.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State Management
+  flutter_riverpod: ^2.5.1
+  riverpod_annotation: ^2.3.5
+
+  # Navigation
+  go_router: ^13.2.0
+
+  # Backend
+  supabase_flutter: ^2.3.4
+
+  # Subscriptions
+  purchases_flutter: ^6.25.0
+
+  # Maps (display only — no live GPS)
+  mapbox_maps_flutter: ^2.2.0
+
+  # Fonts
+  google_fonts: ^6.2.1
+
+  # Local Storage
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+
+  # HTTP
+  dio: ^5.4.3
+
+  # Images
+  cached_network_image: ^3.3.1
+  image_picker: ^1.0.7
+
+  # Animations
+  flutter_animate: ^4.5.0
+
+  # Charts
+  fl_chart: ^0.68.0
+
+  # Health Integration
+  health: ^10.2.0
+
+  # Environment
+  flutter_dotenv: ^5.1.0
+
+  # Models
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.9.0
+
+  # Notifications
+  flutter_local_notifications: ^17.2.0
+
+  # Utils
+  intl: ^0.19.0
+  url_launcher: ^6.2.6
+  app_links: ^6.1.1
+  connectivity_plus: ^6.0.3
+  path_provider: ^2.1.4
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # Code Generation
+  build_runner: ^2.4.8
+  freezed: ^2.5.2
+  json_serializable: ^6.7.1
+  riverpod_generator: ^2.4.0
+
+  # Testing
+  mocktail: ^1.0.3
+
+  # Linting
+  flutter_lints: ^3.0.2
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - .env
+    - assets/images/
+    - assets/icons/
+    - assets/lottie/
+
+  fonts:
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/Montserrat-Regular.ttf
+        - asset: assets/fonts/Montserrat-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Montserrat-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Montserrat-Bold.ttf
+          weight: 700
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-Regular.ttf
+        - asset: assets/fonts/Inter-Medium.ttf
+          weight: 500
