@@ -13,6 +13,7 @@ import 'package:fynix/core/models/workout.dart';
 import 'package:fynix/core/utils/date_helpers.dart';
 import 'package:fynix/core/utils/distance_formatter.dart';
 import 'package:fynix/core/utils/pace_formatter.dart';
+import 'package:fynix/core/widgets/activity_route_preview_strip.dart';
 import 'package:fynix/core/widgets/fynix_card.dart';
 import 'package:fynix/core/widgets/sport_icon.dart';
 import 'package:fynix/features/training/domain/training_notifier.dart';
@@ -877,6 +878,21 @@ class _DistanceChart extends StatelessWidget {
   }
 }
 
+Color _workoutRouteAccent(WorkoutSportType sport) {
+  switch (sport) {
+    case WorkoutSportType.cycling:
+      return AppColors.flameCoral;
+    case WorkoutSportType.swimming:
+      return AppColors.aiAccent;
+    default:
+      return AppColors.gold;
+  }
+}
+
+bool _workoutHasRouteData(Workout w) =>
+    (w.polyline != null && w.polyline!.isNotEmpty) ||
+    (w.mapSnapshotUrl != null && w.mapSnapshotUrl!.isNotEmpty);
+
 // ─── Workout card ─────────────────────────────────────────────────────────────
 class _WorkoutCard extends StatelessWidget {
   const _WorkoutCard({required this.workout, required this.onTap});
@@ -886,59 +902,72 @@ class _WorkoutCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final showRoute = _workoutHasRouteData(workout);
+
     return FynixCard(
       onTap: onTap,
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: AppColors.primary.withAlpha(28),
-              borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
+          if (showRoute) ...[
+            ActivityRoutePreviewStrip(
+              accentColor: _workoutRouteAccent(workout.sportType),
             ),
-            child: Center(
-              child: SportIcon(
-                sport: workout.sportType,
-                color: AppColors.gold,
-              ),
-            ),
-          ),
-          const SizedBox(width: AppSpacing.md),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  workout.name ?? SportIcon.labelFor(workout.sportType),
-                  style: AppTypography.bodyMedium,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Text(
-                  '${DistanceFormatter.formatKm(workout.distanceMeters)} • ${PaceFormatter.formatDurationHuman(workout.durationSeconds)}',
-                  style: AppTypography.bodySmall,
-                ),
-                Text(
-                  DateHelpers.formatRelative(workout.startedAt),
-                  style: AppTypography.labelSmall,
-                ),
-              ],
-            ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            const SizedBox(height: AppSpacing.sm),
+          ],
+          Row(
             children: [
-              Text(
-                '+${workout.xpEarned} XP',
-                style: AppTypography.labelLarge.copyWith(
-                  color: AppColors.xpGreen,
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withAlpha(28),
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
+                ),
+                child: Center(
+                  child: SportIcon(
+                    sport: workout.sportType,
+                    color: AppColors.gold,
+                  ),
                 ),
               ),
-              const Icon(
-                Icons.chevron_right_rounded,
-                color: AppColors.midGray,
-                size: 16,
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      workout.name ?? SportIcon.labelFor(workout.sportType),
+                      style: AppTypography.bodyMedium,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      '${DistanceFormatter.formatKm(workout.distanceMeters)} • ${PaceFormatter.formatDurationHuman(workout.durationSeconds)}',
+                      style: AppTypography.bodySmall,
+                    ),
+                    Text(
+                      DateHelpers.formatRelative(workout.startedAt),
+                      style: AppTypography.labelSmall,
+                    ),
+                  ],
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    '+${workout.xpEarned} XP',
+                    style: AppTypography.labelLarge.copyWith(
+                      color: AppColors.xpGreen,
+                    ),
+                  ),
+                  const Icon(
+                    Icons.chevron_right_rounded,
+                    color: AppColors.midGray,
+                    size: 16,
+                  ),
+                ],
               ),
             ],
           ),

@@ -34,6 +34,21 @@ _$RaceEventImpl _$$RaceEventImplFromJson(Map<String, dynamic> json) =>
           ? null
           : DateTime.parse(json['completedAt'] as String),
       finishTimeSeconds: (json['finishTimeSeconds'] as num?)?.toInt(),
+      matchWindowStart: json['matchWindowStart'] == null
+          ? null
+          : DateTime.parse(json['matchWindowStart'] as String),
+      matchWindowEnd: json['matchWindowEnd'] == null
+          ? null
+          : DateTime.parse(json['matchWindowEnd'] as String),
+      venueLat: (json['venueLat'] as num?)?.toDouble(),
+      venueLng: (json['venueLng'] as num?)?.toDouble(),
+      matchRadiusMeters: (json['matchRadiusMeters'] as num?)?.toInt() ?? 25000,
+      embersSignupCost: (json['embersSignupCost'] as num?)?.toInt() ?? 0,
+      medalTitle: json['medalTitle'] as String?,
+      medalAssetKey: json['medalAssetKey'] as String?,
+      isSimulation: json['isSimulation'] as bool? ?? true,
+      distanceTolerancePercent:
+          (json['distanceTolerancePercent'] as num?)?.toDouble() ?? 8.0,
     );
 
 Map<String, dynamic> _$$RaceEventImplToJson(_$RaceEventImpl instance) =>
@@ -58,6 +73,16 @@ Map<String, dynamic> _$$RaceEventImplToJson(_$RaceEventImpl instance) =>
       'registeredAt': instance.registeredAt?.toIso8601String(),
       'completedAt': instance.completedAt?.toIso8601String(),
       'finishTimeSeconds': instance.finishTimeSeconds,
+      'matchWindowStart': instance.matchWindowStart?.toIso8601String(),
+      'matchWindowEnd': instance.matchWindowEnd?.toIso8601String(),
+      'venueLat': instance.venueLat,
+      'venueLng': instance.venueLng,
+      'matchRadiusMeters': instance.matchRadiusMeters,
+      'embersSignupCost': instance.embersSignupCost,
+      'medalTitle': instance.medalTitle,
+      'medalAssetKey': instance.medalAssetKey,
+      'isSimulation': instance.isSimulation,
+      'distanceTolerancePercent': instance.distanceTolerancePercent,
     };
 
 const _$WorkoutSportTypeEnumMap = {

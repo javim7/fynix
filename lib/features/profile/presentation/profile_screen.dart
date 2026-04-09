@@ -16,8 +16,6 @@ import 'package:fynix/core/widgets/streak_badge.dart';
 import 'package:fynix/core/widgets/xp_bar.dart';
 import 'package:fynix/core/dev/mock_user.dart';
 import 'package:fynix/features/auth/domain/auth_notifier.dart';
-import 'package:fynix/features/profile/presentation/profile_clubs_screen.dart';
-
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
@@ -52,7 +50,7 @@ class _ProfileBody extends StatelessWidget {
         SliverAppBar(
           backgroundColor: AppColors.obsidian,
           floating: true,
-          title: Text('@${user.username}', style: AppTypography.h3),
+          title: const Text('Perfil'),
           actions: [
             IconButton(
               icon: const Icon(Icons.settings_rounded),
@@ -64,53 +62,108 @@ class _ProfileBody extends StatelessWidget {
           padding: const EdgeInsets.all(AppSpacing.md),
           sliver: SliverList(
             delegate: SliverChildListDelegate([
-              // ── Avatar + name ─────────────────────────────────────────────
-              Row(
-                children: [
-                  FynixAvatar(
-                    displayName: user.displayName,
-                    size: 72,
-                    level: user.level,
-                    onTap: () => context.push(Routes.avatar),
-                  ),
-                  const SizedBox(width: AppSpacing.md),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(user.displayName, style: AppTypography.h2),
-                        if (user.bio != null) ...[
+              // ── Avatar preview + identity + Embers ───────────────────────
+              FynixCard(
+                glowColor: AppColors.gold.withAlpha(40),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    FynixAvatar(
+                      displayName: user.displayName,
+                      size: 96,
+                      level: user.level,
+                      characterPreview: const PhoenixCharacterPreviewBadge(),
+                      onTap: () => context.push(Routes.avatar),
+                    ),
+                    const SizedBox(width: AppSpacing.md),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(user.displayName, style: AppTypography.h2),
                           const SizedBox(height: 2),
-                          Text(user.bio!, style: AppTypography.bodySmall),
-                        ],
-                        if (user.city != null) ...[
-                          const SizedBox(height: 4),
-                          Row(
+                          Text(
+                            '@${user.username}',
+                            style: AppTypography.labelSmall.copyWith(
+                              color: AppColors.midGray,
+                            ),
+                          ),
+                          if (user.bio != null) ...[
+                            const SizedBox(height: 6),
+                            Text(user.bio!, style: AppTypography.bodySmall),
+                          ],
+                          if (user.city != null) ...[
+                            const SizedBox(height: 4),
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.location_on_rounded,
+                                  size: 12,
+                                  color: AppColors.midGray,
+                                ),
+                                const SizedBox(width: 2),
+                                Text(
+                                  user.city!,
+                                  style: AppTypography.labelSmall,
+                                ),
+                              ],
+                            ),
+                          ],
+                          const SizedBox(height: AppSpacing.sm),
+                          Wrap(
+                            spacing: AppSpacing.sm,
+                            runSpacing: AppSpacing.xs,
+                            crossAxisAlignment: WrapCrossAlignment.center,
                             children: [
-                              const Icon(
-                                Icons.location_on_rounded,
-                                size: 12,
-                                color: AppColors.midGray,
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 5,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.flameCoral.withAlpha(20),
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(
+                                    color: AppColors.flameCoral.withAlpha(60),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Icon(
+                                      Icons.local_fire_department_rounded,
+                                      color: AppColors.flameCoral,
+                                      size: 15,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      '${user.embersBalance} Embers',
+                                      style: AppTypography.labelMedium.copyWith(
+                                        color: AppColors.flameCoral,
+                                        fontFamily: 'Montserrat',
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              const SizedBox(width: 2),
-                              Text(
-                                user.city!,
-                                style: AppTypography.labelSmall,
+                              StreakBadge(
+                                streakDays: user.currentStreak,
+                                size: StreakBadgeSize.small,
+                                animate: user.currentStreak >= 7,
                               ),
                             ],
                           ),
                         ],
-                        const SizedBox(height: AppSpacing.xs),
-                        StreakBadge(
-                          streakDays: user.currentStreak,
-                          size: StreakBadgeSize.small,
-                          animate: user.currentStreak >= 7,
-                        ),
-                      ],
+                      ),
                     ),
+                  ],
+                ),
+              ).animate().fadeIn(duration: 400.ms).slideY(
+                    begin: 0.05,
+                    end: 0,
+                    duration: 400.ms,
                   ),
-                ],
-              ),
               const SizedBox(height: AppSpacing.md),
 
               // ── XP card ───────────────────────────────────────────────────
@@ -296,10 +349,24 @@ class _ProfileBody extends StatelessWidget {
                     ),
                     _Divider(),
                     _QuickLink(
+                      icon: Icons.card_giftcard_rounded,
+                      iconColor: AppColors.xpGreen,
+                      label: 'Beneficios para atletas',
+                      onTap: () => context.push(Routes.offers),
+                    ),
+                    _Divider(),
+                    _QuickLink(
                       icon: Icons.military_tech_rounded,
                       iconColor: AppColors.flameCoral,
                       label: 'Mis insignias',
                       onTap: () => context.push(Routes.badges),
+                    ),
+                    _Divider(),
+                    _QuickLink(
+                      icon: Icons.emoji_events_rounded,
+                      iconColor: AppColors.gold,
+                      label: 'Medallas digitales',
+                      onTap: () => context.push(Routes.profileMedals),
                     ),
                     _Divider(),
                     _QuickLink(

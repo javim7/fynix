@@ -21,6 +21,7 @@ final kDevUser = UserProfile(
   totalWorkouts: 47,
   totalDistanceMeters: 312000,
   totalDurationSeconds: 82800,
+  embersBalance: 120,
   createdAt: DateTime(2025, 1, 15),
   updatedAt: DateTime.now(),
 );

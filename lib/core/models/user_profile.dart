@@ -46,6 +46,9 @@ abstract class UserProfile with _$UserProfile {
     DateTime? subscriptionExpiresAt,
     String? revenuecatCustomerId,
 
+    /// In-app currency (see Supabase `users.embers_balance`).
+    @Default(0) int embersBalance,
+
     required DateTime createdAt,
     required DateTime updatedAt,
   }) = _UserProfile;

@@ -189,7 +189,11 @@ class MockEvent {
     this.raceDate = '',
     this.location = '',
     this.distance = '',
-    this.registrationFee = '',
+    this.embersSignupCost = 0,
+    this.xpReward = 0,
+    this.medalTitle = '',
+    this.medalEmoji = '🏅',
+    this.officialInfoUrl = '',
     // Community-specific
     this.cause = '',
     this.causeImpact = '',
@@ -211,7 +215,11 @@ class MockEvent {
   final String raceDate;
   final String location;
   final String distance;
-  final String registrationFee;
+  final int embersSignupCost;
+  final int xpReward;
+  final String medalTitle;
+  final String medalEmoji;
+  final String officialInfoUrl;
   // Community fields
   final String cause;
   final String causeImpact; // e.g. '1 km = 1 comida donada'
@@ -223,7 +231,7 @@ const kMockEvents = [
     title: '21K De la Ciudad de Guatemala',
     description: 'El medio maratón más esperado del año. Recorre las calles históricas de la ciudad y cruza la meta en el Parque Central.',
     type: 'race',
-    reward: '800 XP + Insignia Finisher',
+    reward: '800 XP + medalla digital',
     endsInDays: 18,
     participants: 3200,
     isFeatured: true,
@@ -231,13 +239,17 @@ const kMockEvents = [
     raceDate: '27 Abr 2026',
     location: 'Ciudad de Guatemala',
     distance: '21.1 km',
-    registrationFee: 'Q150',
+    embersSignupCost: 35,
+    xpReward: 800,
+    medalTitle: 'Medalla 21K Ciudad',
+    medalEmoji: '🥇',
+    officialInfoUrl: 'https://example.com/21k-guatemala',
   ),
   MockEvent(
     title: 'Maratón de la Ciudad',
     description: 'La carrera insignia de Guatemala. 42K por las zonas más emblemáticas. Para corredores que buscan su mejor marca personal.',
     type: 'race',
-    reward: '1500 XP + Insignia Maratonista',
+    reward: '1500 XP + medalla digital',
     endsInDays: 46,
     participants: 1850,
     isFeatured: true,
@@ -245,7 +257,11 @@ const kMockEvents = [
     raceDate: '24 May 2026',
     location: 'Ciudad de Guatemala',
     distance: '42.2 km',
-    registrationFee: 'Q250',
+    embersSignupCost: 50,
+    xpReward: 1500,
+    medalTitle: 'Medalla Maratón Ciudad',
+    medalEmoji: '🏆',
+    officialInfoUrl: 'https://example.com/maraton-ciudad',
   ),
 
   // ── Community events ──────────────────────────────────────────────────────
@@ -299,6 +315,7 @@ class MockActivity {
     required this.sport,
     required this.durationMin,
     required this.daysAgo,
+    this.hasRoutePreview = true,
   });
 
   final String name;
@@ -307,6 +324,9 @@ class MockActivity {
   final String sport; // icon key
   final int durationMin;
   final int daysAgo;
+
+  /// Decorative route strip on cards; full map stays in detail / Progreso.
+  final bool hasRoutePreview;
 }
 
 const kMockActivities = [
@@ -340,6 +360,7 @@ class MockFriendActivity {
     required this.daysAgo,
     required this.likeCount,
     required this.commentCount,
+    this.hasRoutePreview = true,
   });
 
   final String name;
@@ -351,6 +372,7 @@ class MockFriendActivity {
   final int daysAgo;
   final int likeCount;
   final int commentCount;
+  final bool hasRoutePreview;
 }
 
 const kMockFriendActivities = [
@@ -397,6 +419,7 @@ const kMockFriendActivities = [
     daysAgo: 1,
     likeCount: 11,
     commentCount: 2,
+    hasRoutePreview: false,
   ),
 ];
 
@@ -434,7 +457,104 @@ const kMockStoreItems = [
   MockStoreItem(name: '"Leyenda de Liga"', description: 'Alcanza la Liga Diamante', emberCost: 300, icon: '💎', category: 'title'),
 ];
 
-// ─── Ember IAP packages ───────────────────────────────────────────────────────
+// ─── Partner offers (marcas / beneficios) ───────────────────────────────────
+/// Tags match filter chips on [OffersScreen]: running, cycling, nutrition, events.
+class PartnerOffer {
+  const PartnerOffer({
+    required this.id,
+    required this.brandName,
+    required this.title,
+    required this.subtitle,
+    required this.tags,
+    required this.expiresInDays,
+    required this.ctaUrl,
+    this.embersBonus,
+    this.isFeatured = false,
+    this.brandEmoji,
+  });
+
+  final String id;
+  final String brandName;
+  final String title;
+  final String subtitle;
+
+  /// Subset of: running, cycling, nutrition, events
+  final List<String> tags;
+
+  /// Days until offer ends (mock — replace with [DateTime] from API later).
+  final int expiresInDays;
+  final String ctaUrl;
+  final int? embersBonus;
+  final bool isFeatured;
+
+  /// Optional emoji shown as brand mark when no logo URL exists.
+  final String? brandEmoji;
+}
+
+const kMockPartnerOffers = [
+  PartnerOffer(
+    id: '1',
+    brandName: 'Stride Guatemala',
+    title: '20% en zapatillas de ruta',
+    subtitle: 'Modelos seleccionados Brooks y Hoka. Código al checkout.',
+    tags: ['running'],
+    expiresInDays: 3,
+    ctaUrl: 'https://example.com/stride',
+    embersBonus: 15,
+    isFeatured: true,
+    brandEmoji: '👟',
+  ),
+  PartnerOffer(
+    id: '2',
+    brandName: 'Pedal House',
+    title: 'Servicio express en cadena',
+    subtitle: 'Limpieza + revisión en 24h para socios Fynix.',
+    tags: ['cycling'],
+    expiresInDays: 14,
+    ctaUrl: 'https://example.com/pedalhouse',
+    embersBonus: 10,
+    brandEmoji: '🚴',
+  ),
+  PartnerOffer(
+    id: '3',
+    brandName: 'Fuel Lab',
+    title: 'Pack energético -15%',
+    subtitle: 'Geles y bebida isotónica. Válido en tienda y web.',
+    tags: ['nutrition', 'running'],
+    expiresInDays: 7,
+    ctaUrl: 'https://example.com/fuellab',
+    brandEmoji: '🥤',
+  ),
+  PartnerOffer(
+    id: '4',
+    brandName: '21K Ciudad',
+    title: 'Inscripción anticipada',
+    subtitle: 'Precio especial hasta agotar cupos — incluye playera técnica.',
+    tags: ['events', 'running'],
+    expiresInDays: 18,
+    ctaUrl: 'https://example.com/21k',
+    embersBonus: 25,
+    brandEmoji: '🏅',
+  ),
+  PartnerOffer(
+    id: '5',
+    brandName: 'Monte Activo',
+    title: 'Entrada trail weekend',
+    subtitle: 'Dos días de rutas guiadas en Antigua. Grupo reducido.',
+    tags: ['events', 'running'],
+    expiresInDays: 5,
+    ctaUrl: 'https://example.com/monteactivo',
+    brandEmoji: '⛰️',
+  ),
+];
+
+PartnerOffer? get kFeaturedPartnerOffer {
+  for (final o in kMockPartnerOffers) {
+    if (o.isFeatured) return o;
+  }
+  return kMockPartnerOffers.isEmpty ? null : kMockPartnerOffers.first;
+}
+
 class MockEmberPackage {
   const MockEmberPackage({
     required this.embers,

@@ -25,6 +25,7 @@ import 'package:fynix/features/integrations/presentation/garmin_connect_screen.d
 import 'package:fynix/features/integrations/presentation/integrations_screen.dart';
 import 'package:fynix/features/integrations/presentation/strava_connect_screen.dart';
 import 'package:fynix/features/league/presentation/league_screen.dart';
+import 'package:fynix/features/profile/presentation/medals_screen.dart';
 import 'package:fynix/features/profile/presentation/profile_clubs_screen.dart';
 import 'package:fynix/features/profile/presentation/profile_screen.dart';
 import 'package:fynix/features/profile/presentation/user_profile_screen.dart';
@@ -32,6 +33,7 @@ import 'package:fynix/features/social/presentation/discover_screen.dart';
 import 'package:fynix/features/social/presentation/followers_screen.dart';
 import 'package:fynix/features/social/presentation/following_screen.dart';
 import 'package:fynix/features/social/presentation/social_screen.dart';
+import 'package:fynix/features/offers/presentation/offers_screen.dart';
 import 'package:fynix/features/store/presentation/store_screen.dart';
 import 'package:fynix/features/subscription/presentation/paywall_screen.dart';
 import 'package:fynix/features/training/presentation/plan_detail_screen.dart';
@@ -77,6 +79,7 @@ abstract final class Routes {
 
   // Profile sub-routes
   static const String badges = '/profile/badges';
+  static const String profileMedals = '/profile/medals';
   static const String avatar = '/profile/avatar';
   static const String integrations = '/profile/integrations';
   static const String profileClubs = '/profile/clubs';
@@ -86,6 +89,9 @@ abstract final class Routes {
 
   // Store
   static const String store = '/store';
+
+  /// Partner / brand benefits (not the in-game Tienda).
+  static const String offers = '/offers';
 
   // Full-screen routes
   static const String userProfile = '/u/:username';
@@ -349,6 +355,11 @@ GoRouter router(Ref ref) {
         name: 'store',
         builder: (context, state) => const StoreScreen(),
       ),
+      GoRoute(
+        path: Routes.offers,
+        name: 'offers',
+        builder: (context, state) => const OffersScreen(),
+      ),
 
       // ─── Main shell (bottom nav — 5 branches) ─────────────────────────
       StatefulShellRoute.indexedStack(
@@ -432,6 +443,11 @@ GoRouter router(Ref ref) {
                     path: 'badges',
                     name: 'badges',
                     builder: (context, state) => const BadgesScreen(),
+                  ),
+                  GoRoute(
+                    path: 'medals',
+                    name: 'profileMedals',
+                    builder: (context, state) => const MedalsScreen(),
                   ),
                   GoRoute(
                     path: 'avatar',

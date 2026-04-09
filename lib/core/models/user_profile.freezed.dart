@@ -47,6 +47,9 @@ mixin _$UserProfile {
   SubscriptionTier get subscriptionTier => throw _privateConstructorUsedError;
   DateTime? get subscriptionExpiresAt => throw _privateConstructorUsedError;
   String? get revenuecatCustomerId => throw _privateConstructorUsedError;
+
+  /// In-app currency (see Supabase `users.embers_balance`).
+  int get embersBalance => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime get updatedAt => throw _privateConstructorUsedError;
 
@@ -91,6 +94,7 @@ abstract class $UserProfileCopyWith<$Res> {
       SubscriptionTier subscriptionTier,
       DateTime? subscriptionExpiresAt,
       String? revenuecatCustomerId,
+      int embersBalance,
       DateTime createdAt,
       DateTime updatedAt});
 }
@@ -134,6 +138,7 @@ class _$UserProfileCopyWithImpl<$Res, $Val extends UserProfile>
     Object? subscriptionTier = null,
     Object? subscriptionExpiresAt = freezed,
     Object? revenuecatCustomerId = freezed,
+    Object? embersBalance = null,
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
@@ -234,6 +239,10 @@ class _$UserProfileCopyWithImpl<$Res, $Val extends UserProfile>
           ? _value.revenuecatCustomerId
           : revenuecatCustomerId // ignore: cast_nullable_to_non_nullable
               as String?,
+      embersBalance: null == embersBalance
+          ? _value.embersBalance
+          : embersBalance // ignore: cast_nullable_to_non_nullable
+              as int,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -279,6 +288,7 @@ abstract class _$$UserProfileImplCopyWith<$Res>
       SubscriptionTier subscriptionTier,
       DateTime? subscriptionExpiresAt,
       String? revenuecatCustomerId,
+      int embersBalance,
       DateTime createdAt,
       DateTime updatedAt});
 }
@@ -320,6 +330,7 @@ class __$$UserProfileImplCopyWithImpl<$Res>
     Object? subscriptionTier = null,
     Object? subscriptionExpiresAt = freezed,
     Object? revenuecatCustomerId = freezed,
+    Object? embersBalance = null,
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
@@ -420,6 +431,10 @@ class __$$UserProfileImplCopyWithImpl<$Res>
           ? _value.revenuecatCustomerId
           : revenuecatCustomerId // ignore: cast_nullable_to_non_nullable
               as String?,
+      embersBalance: null == embersBalance
+          ? _value.embersBalance
+          : embersBalance // ignore: cast_nullable_to_non_nullable
+              as int,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -460,6 +475,7 @@ class _$UserProfileImpl implements _UserProfile {
       this.subscriptionTier = SubscriptionTier.free,
       this.subscriptionExpiresAt,
       this.revenuecatCustomerId,
+      this.embersBalance = 0,
       required this.createdAt,
       required this.updatedAt});
 
@@ -533,6 +549,11 @@ class _$UserProfileImpl implements _UserProfile {
   final DateTime? subscriptionExpiresAt;
   @override
   final String? revenuecatCustomerId;
+
+  /// In-app currency (see Supabase `users.embers_balance`).
+  @override
+  @JsonKey()
+  final int embersBalance;
   @override
   final DateTime createdAt;
   @override
@@ -540,7 +561,7 @@ class _$UserProfileImpl implements _UserProfile {
 
   @override
   String toString() {
-    return 'UserProfile(id: $id, username: $username, displayName: $displayName, email: $email, bio: $bio, avatarId: $avatarId, city: $city, country: $country, level: $level, totalXp: $totalXp, xpToNextLevel: $xpToNextLevel, currentStreak: $currentStreak, longestStreak: $longestStreak, lastActivityDate: $lastActivityDate, streakFreezesRemaining: $streakFreezesRemaining, followingCount: $followingCount, followerCount: $followerCount, totalWorkouts: $totalWorkouts, totalDistanceMeters: $totalDistanceMeters, totalDurationSeconds: $totalDurationSeconds, subscriptionStatus: $subscriptionStatus, subscriptionTier: $subscriptionTier, subscriptionExpiresAt: $subscriptionExpiresAt, revenuecatCustomerId: $revenuecatCustomerId, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'UserProfile(id: $id, username: $username, displayName: $displayName, email: $email, bio: $bio, avatarId: $avatarId, city: $city, country: $country, level: $level, totalXp: $totalXp, xpToNextLevel: $xpToNextLevel, currentStreak: $currentStreak, longestStreak: $longestStreak, lastActivityDate: $lastActivityDate, streakFreezesRemaining: $streakFreezesRemaining, followingCount: $followingCount, followerCount: $followerCount, totalWorkouts: $totalWorkouts, totalDistanceMeters: $totalDistanceMeters, totalDurationSeconds: $totalDurationSeconds, subscriptionStatus: $subscriptionStatus, subscriptionTier: $subscriptionTier, subscriptionExpiresAt: $subscriptionExpiresAt, revenuecatCustomerId: $revenuecatCustomerId, embersBalance: $embersBalance, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -589,6 +610,8 @@ class _$UserProfileImpl implements _UserProfile {
                 other.subscriptionExpiresAt == subscriptionExpiresAt) &&
             (identical(other.revenuecatCustomerId, revenuecatCustomerId) ||
                 other.revenuecatCustomerId == revenuecatCustomerId) &&
+            (identical(other.embersBalance, embersBalance) ||
+                other.embersBalance == embersBalance) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -623,6 +646,7 @@ class _$UserProfileImpl implements _UserProfile {
         subscriptionTier,
         subscriptionExpiresAt,
         revenuecatCustomerId,
+        embersBalance,
         createdAt,
         updatedAt
       ]);
@@ -669,6 +693,7 @@ abstract class _UserProfile implements UserProfile {
       final SubscriptionTier subscriptionTier,
       final DateTime? subscriptionExpiresAt,
       final String? revenuecatCustomerId,
+      final int embersBalance,
       required final DateTime createdAt,
       required final DateTime updatedAt}) = _$UserProfileImpl;
 
@@ -723,6 +748,10 @@ abstract class _UserProfile implements UserProfile {
   DateTime? get subscriptionExpiresAt;
   @override
   String? get revenuecatCustomerId;
+
+  /// In-app currency (see Supabase `users.embers_balance`).
+  @override
+  int get embersBalance;
   @override
   DateTime get createdAt;
   @override

@@ -42,6 +42,26 @@ mixin _$RaceEvent {
   DateTime? get completedAt => throw _privateConstructorUsedError;
   int? get finishTimeSeconds => throw _privateConstructorUsedError;
 
+  /// Activity must start within [matchWindowStart]..[matchWindowEnd] (UTC).
+  DateTime? get matchWindowStart => throw _privateConstructorUsedError;
+  DateTime? get matchWindowEnd => throw _privateConstructorUsedError;
+
+  /// Event venue for GPS check (optional if null, geo rule skipped).
+  double? get venueLat => throw _privateConstructorUsedError;
+  double? get venueLng => throw _privateConstructorUsedError;
+
+  /// Max distance in meters from activity start to venue (default 25 km).
+  int get matchRadiusMeters => throw _privateConstructorUsedError;
+
+  /// Embers deducted on join (refunded on completion via RPC when configured).
+  int get embersSignupCost => throw _privateConstructorUsedError;
+  String? get medalTitle => throw _privateConstructorUsedError;
+  String? get medalAssetKey => throw _privateConstructorUsedError;
+  bool get isSimulation => throw _privateConstructorUsedError;
+
+  /// Allowed deviation from target distance (percent), e.g. 8 = ±8%.
+  double get distanceTolerancePercent => throw _privateConstructorUsedError;
+
   /// Serializes this RaceEvent to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
@@ -77,7 +97,17 @@ abstract class $RaceEventCopyWith<$Res> {
       bool isCompleted,
       DateTime? registeredAt,
       DateTime? completedAt,
-      int? finishTimeSeconds});
+      int? finishTimeSeconds,
+      DateTime? matchWindowStart,
+      DateTime? matchWindowEnd,
+      double? venueLat,
+      double? venueLng,
+      int matchRadiusMeters,
+      int embersSignupCost,
+      String? medalTitle,
+      String? medalAssetKey,
+      bool isSimulation,
+      double distanceTolerancePercent});
 }
 
 /// @nodoc
@@ -115,6 +145,16 @@ class _$RaceEventCopyWithImpl<$Res, $Val extends RaceEvent>
     Object? registeredAt = freezed,
     Object? completedAt = freezed,
     Object? finishTimeSeconds = freezed,
+    Object? matchWindowStart = freezed,
+    Object? matchWindowEnd = freezed,
+    Object? venueLat = freezed,
+    Object? venueLng = freezed,
+    Object? matchRadiusMeters = null,
+    Object? embersSignupCost = null,
+    Object? medalTitle = freezed,
+    Object? medalAssetKey = freezed,
+    Object? isSimulation = null,
+    Object? distanceTolerancePercent = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -197,6 +237,46 @@ class _$RaceEventCopyWithImpl<$Res, $Val extends RaceEvent>
           ? _value.finishTimeSeconds
           : finishTimeSeconds // ignore: cast_nullable_to_non_nullable
               as int?,
+      matchWindowStart: freezed == matchWindowStart
+          ? _value.matchWindowStart
+          : matchWindowStart // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      matchWindowEnd: freezed == matchWindowEnd
+          ? _value.matchWindowEnd
+          : matchWindowEnd // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      venueLat: freezed == venueLat
+          ? _value.venueLat
+          : venueLat // ignore: cast_nullable_to_non_nullable
+              as double?,
+      venueLng: freezed == venueLng
+          ? _value.venueLng
+          : venueLng // ignore: cast_nullable_to_non_nullable
+              as double?,
+      matchRadiusMeters: null == matchRadiusMeters
+          ? _value.matchRadiusMeters
+          : matchRadiusMeters // ignore: cast_nullable_to_non_nullable
+              as int,
+      embersSignupCost: null == embersSignupCost
+          ? _value.embersSignupCost
+          : embersSignupCost // ignore: cast_nullable_to_non_nullable
+              as int,
+      medalTitle: freezed == medalTitle
+          ? _value.medalTitle
+          : medalTitle // ignore: cast_nullable_to_non_nullable
+              as String?,
+      medalAssetKey: freezed == medalAssetKey
+          ? _value.medalAssetKey
+          : medalAssetKey // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isSimulation: null == isSimulation
+          ? _value.isSimulation
+          : isSimulation // ignore: cast_nullable_to_non_nullable
+              as bool,
+      distanceTolerancePercent: null == distanceTolerancePercent
+          ? _value.distanceTolerancePercent
+          : distanceTolerancePercent // ignore: cast_nullable_to_non_nullable
+              as double,
     ) as $Val);
   }
 }
@@ -229,7 +309,17 @@ abstract class _$$RaceEventImplCopyWith<$Res>
       bool isCompleted,
       DateTime? registeredAt,
       DateTime? completedAt,
-      int? finishTimeSeconds});
+      int? finishTimeSeconds,
+      DateTime? matchWindowStart,
+      DateTime? matchWindowEnd,
+      double? venueLat,
+      double? venueLng,
+      int matchRadiusMeters,
+      int embersSignupCost,
+      String? medalTitle,
+      String? medalAssetKey,
+      bool isSimulation,
+      double distanceTolerancePercent});
 }
 
 /// @nodoc
@@ -265,6 +355,16 @@ class __$$RaceEventImplCopyWithImpl<$Res>
     Object? registeredAt = freezed,
     Object? completedAt = freezed,
     Object? finishTimeSeconds = freezed,
+    Object? matchWindowStart = freezed,
+    Object? matchWindowEnd = freezed,
+    Object? venueLat = freezed,
+    Object? venueLng = freezed,
+    Object? matchRadiusMeters = null,
+    Object? embersSignupCost = null,
+    Object? medalTitle = freezed,
+    Object? medalAssetKey = freezed,
+    Object? isSimulation = null,
+    Object? distanceTolerancePercent = null,
   }) {
     return _then(_$RaceEventImpl(
       id: null == id
@@ -347,6 +447,46 @@ class __$$RaceEventImplCopyWithImpl<$Res>
           ? _value.finishTimeSeconds
           : finishTimeSeconds // ignore: cast_nullable_to_non_nullable
               as int?,
+      matchWindowStart: freezed == matchWindowStart
+          ? _value.matchWindowStart
+          : matchWindowStart // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      matchWindowEnd: freezed == matchWindowEnd
+          ? _value.matchWindowEnd
+          : matchWindowEnd // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      venueLat: freezed == venueLat
+          ? _value.venueLat
+          : venueLat // ignore: cast_nullable_to_non_nullable
+              as double?,
+      venueLng: freezed == venueLng
+          ? _value.venueLng
+          : venueLng // ignore: cast_nullable_to_non_nullable
+              as double?,
+      matchRadiusMeters: null == matchRadiusMeters
+          ? _value.matchRadiusMeters
+          : matchRadiusMeters // ignore: cast_nullable_to_non_nullable
+              as int,
+      embersSignupCost: null == embersSignupCost
+          ? _value.embersSignupCost
+          : embersSignupCost // ignore: cast_nullable_to_non_nullable
+              as int,
+      medalTitle: freezed == medalTitle
+          ? _value.medalTitle
+          : medalTitle // ignore: cast_nullable_to_non_nullable
+              as String?,
+      medalAssetKey: freezed == medalAssetKey
+          ? _value.medalAssetKey
+          : medalAssetKey // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isSimulation: null == isSimulation
+          ? _value.isSimulation
+          : isSimulation // ignore: cast_nullable_to_non_nullable
+              as bool,
+      distanceTolerancePercent: null == distanceTolerancePercent
+          ? _value.distanceTolerancePercent
+          : distanceTolerancePercent // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
@@ -374,7 +514,17 @@ class _$RaceEventImpl implements _RaceEvent {
       this.isCompleted = false,
       this.registeredAt,
       this.completedAt,
-      this.finishTimeSeconds});
+      this.finishTimeSeconds,
+      this.matchWindowStart,
+      this.matchWindowEnd,
+      this.venueLat,
+      this.venueLng,
+      this.matchRadiusMeters = 25000,
+      this.embersSignupCost = 0,
+      this.medalTitle,
+      this.medalAssetKey,
+      this.isSimulation = true,
+      this.distanceTolerancePercent = 8.0});
 
   factory _$RaceEventImpl.fromJson(Map<String, dynamic> json) =>
       _$$RaceEventImplFromJson(json);
@@ -428,9 +578,43 @@ class _$RaceEventImpl implements _RaceEvent {
   @override
   final int? finishTimeSeconds;
 
+  /// Activity must start within [matchWindowStart]..[matchWindowEnd] (UTC).
+  @override
+  final DateTime? matchWindowStart;
+  @override
+  final DateTime? matchWindowEnd;
+
+  /// Event venue for GPS check (optional if null, geo rule skipped).
+  @override
+  final double? venueLat;
+  @override
+  final double? venueLng;
+
+  /// Max distance in meters from activity start to venue (default 25 km).
+  @override
+  @JsonKey()
+  final int matchRadiusMeters;
+
+  /// Embers deducted on join (refunded on completion via RPC when configured).
+  @override
+  @JsonKey()
+  final int embersSignupCost;
+  @override
+  final String? medalTitle;
+  @override
+  final String? medalAssetKey;
+  @override
+  @JsonKey()
+  final bool isSimulation;
+
+  /// Allowed deviation from target distance (percent), e.g. 8 = ±8%.
+  @override
+  @JsonKey()
+  final double distanceTolerancePercent;
+
   @override
   String toString() {
-    return 'RaceEvent(id: $id, title: $title, description: $description, sportType: $sportType, distanceMeters: $distanceMeters, location: $location, city: $city, country: $country, eventDate: $eventDate, registrationUrl: $registrationUrl, imageUrl: $imageUrl, xpReward: $xpReward, bonusXpReward: $bonusXpReward, isFeatured: $isFeatured, createdAt: $createdAt, isRegistered: $isRegistered, isCompleted: $isCompleted, registeredAt: $registeredAt, completedAt: $completedAt, finishTimeSeconds: $finishTimeSeconds)';
+    return 'RaceEvent(id: $id, title: $title, description: $description, sportType: $sportType, distanceMeters: $distanceMeters, location: $location, city: $city, country: $country, eventDate: $eventDate, registrationUrl: $registrationUrl, imageUrl: $imageUrl, xpReward: $xpReward, bonusXpReward: $bonusXpReward, isFeatured: $isFeatured, createdAt: $createdAt, isRegistered: $isRegistered, isCompleted: $isCompleted, registeredAt: $registeredAt, completedAt: $completedAt, finishTimeSeconds: $finishTimeSeconds, matchWindowStart: $matchWindowStart, matchWindowEnd: $matchWindowEnd, venueLat: $venueLat, venueLng: $venueLng, matchRadiusMeters: $matchRadiusMeters, embersSignupCost: $embersSignupCost, medalTitle: $medalTitle, medalAssetKey: $medalAssetKey, isSimulation: $isSimulation, distanceTolerancePercent: $distanceTolerancePercent)';
   }
 
   @override
@@ -473,7 +657,28 @@ class _$RaceEventImpl implements _RaceEvent {
             (identical(other.completedAt, completedAt) ||
                 other.completedAt == completedAt) &&
             (identical(other.finishTimeSeconds, finishTimeSeconds) ||
-                other.finishTimeSeconds == finishTimeSeconds));
+                other.finishTimeSeconds == finishTimeSeconds) &&
+            (identical(other.matchWindowStart, matchWindowStart) ||
+                other.matchWindowStart == matchWindowStart) &&
+            (identical(other.matchWindowEnd, matchWindowEnd) ||
+                other.matchWindowEnd == matchWindowEnd) &&
+            (identical(other.venueLat, venueLat) ||
+                other.venueLat == venueLat) &&
+            (identical(other.venueLng, venueLng) ||
+                other.venueLng == venueLng) &&
+            (identical(other.matchRadiusMeters, matchRadiusMeters) ||
+                other.matchRadiusMeters == matchRadiusMeters) &&
+            (identical(other.embersSignupCost, embersSignupCost) ||
+                other.embersSignupCost == embersSignupCost) &&
+            (identical(other.medalTitle, medalTitle) ||
+                other.medalTitle == medalTitle) &&
+            (identical(other.medalAssetKey, medalAssetKey) ||
+                other.medalAssetKey == medalAssetKey) &&
+            (identical(other.isSimulation, isSimulation) ||
+                other.isSimulation == isSimulation) &&
+            (identical(
+                    other.distanceTolerancePercent, distanceTolerancePercent) ||
+                other.distanceTolerancePercent == distanceTolerancePercent));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -499,7 +704,17 @@ class _$RaceEventImpl implements _RaceEvent {
         isCompleted,
         registeredAt,
         completedAt,
-        finishTimeSeconds
+        finishTimeSeconds,
+        matchWindowStart,
+        matchWindowEnd,
+        venueLat,
+        venueLng,
+        matchRadiusMeters,
+        embersSignupCost,
+        medalTitle,
+        medalAssetKey,
+        isSimulation,
+        distanceTolerancePercent
       ]);
 
   /// Create a copy of RaceEvent
@@ -539,7 +754,17 @@ abstract class _RaceEvent implements RaceEvent {
       final bool isCompleted,
       final DateTime? registeredAt,
       final DateTime? completedAt,
-      final int? finishTimeSeconds}) = _$RaceEventImpl;
+      final int? finishTimeSeconds,
+      final DateTime? matchWindowStart,
+      final DateTime? matchWindowEnd,
+      final double? venueLat,
+      final double? venueLng,
+      final int matchRadiusMeters,
+      final int embersSignupCost,
+      final String? medalTitle,
+      final String? medalAssetKey,
+      final bool isSimulation,
+      final double distanceTolerancePercent}) = _$RaceEventImpl;
 
   factory _RaceEvent.fromJson(Map<String, dynamic> json) =
       _$RaceEventImpl.fromJson;
@@ -584,6 +809,36 @@ abstract class _RaceEvent implements RaceEvent {
   DateTime? get completedAt;
   @override
   int? get finishTimeSeconds;
+
+  /// Activity must start within [matchWindowStart]..[matchWindowEnd] (UTC).
+  @override
+  DateTime? get matchWindowStart;
+  @override
+  DateTime? get matchWindowEnd;
+
+  /// Event venue for GPS check (optional if null, geo rule skipped).
+  @override
+  double? get venueLat;
+  @override
+  double? get venueLng;
+
+  /// Max distance in meters from activity start to venue (default 25 km).
+  @override
+  int get matchRadiusMeters;
+
+  /// Embers deducted on join (refunded on completion via RPC when configured).
+  @override
+  int get embersSignupCost;
+  @override
+  String? get medalTitle;
+  @override
+  String? get medalAssetKey;
+  @override
+  bool get isSimulation;
+
+  /// Allowed deviation from target distance (percent), e.g. 8 = ±8%.
+  @override
+  double get distanceTolerancePercent;
 
   /// Create a copy of RaceEvent
   /// with the given fields replaced by the non-null parameter values.

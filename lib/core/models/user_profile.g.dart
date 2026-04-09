@@ -42,6 +42,7 @@ _$UserProfileImpl _$$UserProfileImplFromJson(Map<String, dynamic> json) =>
           ? null
           : DateTime.parse(json['subscriptionExpiresAt'] as String),
       revenuecatCustomerId: json['revenuecatCustomerId'] as String?,
+      embersBalance: (json['embersBalance'] as num?)?.toInt() ?? 0,
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
@@ -74,6 +75,7 @@ Map<String, dynamic> _$$UserProfileImplToJson(_$UserProfileImpl instance) =>
       'subscriptionExpiresAt':
           instance.subscriptionExpiresAt?.toIso8601String(),
       'revenuecatCustomerId': instance.revenuecatCustomerId,
+      'embersBalance': instance.embersBalance,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
     };

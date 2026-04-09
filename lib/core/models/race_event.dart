@@ -30,6 +30,28 @@ abstract class RaceEvent with _$RaceEvent {
     DateTime? registeredAt,
     DateTime? completedAt,
     int? finishTimeSeconds,
+
+    /// Activity must start within [matchWindowStart]..[matchWindowEnd] (UTC).
+    DateTime? matchWindowStart,
+    DateTime? matchWindowEnd,
+
+    /// Event venue for GPS check (optional if null, geo rule skipped).
+    double? venueLat,
+    double? venueLng,
+
+    /// Max distance in meters from activity start to venue (default 25 km).
+    @Default(25000) int matchRadiusMeters,
+
+    /// Embers deducted on join (refunded on completion via RPC when configured).
+    @Default(0) int embersSignupCost,
+
+    String? medalTitle,
+    String? medalAssetKey,
+
+    @Default(true) bool isSimulation,
+
+    /// Allowed deviation from target distance (percent), e.g. 8 = ±8%.
+    @Default(8.0) double distanceTolerancePercent,
   }) = _RaceEvent;
 
   factory RaceEvent.fromJson(Map<String, dynamic> json) =>

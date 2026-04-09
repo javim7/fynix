@@ -6,6 +6,7 @@ import 'package:fynix/core/constants/app_spacing.dart';
 import 'package:fynix/core/constants/app_typography.dart';
 import 'package:fynix/core/dev/mock_data.dart';
 import 'package:fynix/core/widgets/fynix_card.dart';
+import 'package:fynix/features/gamification/presentation/mock_event_detail_screen.dart';
 
 class ChallengesScreen extends StatefulWidget {
   const ChallengesScreen({super.key});
@@ -385,7 +386,18 @@ class _RaceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              builder: (_) => MockEventDetailScreen(event: event),
+            ),
+          );
+        },
+        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+        child: Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
@@ -438,7 +450,7 @@ class _RaceCard extends StatelessWidget {
                   border: Border.all(color: AppColors.gold.withAlpha(60)),
                 ),
                 child: Text(
-                  'CARRERA OFICIAL',
+                  'RETO EN FYNIX',
                   style: AppTypography.labelSmall.copyWith(
                     color: AppColors.gold,
                     fontFamily: 'Montserrat',
@@ -516,38 +528,39 @@ class _RaceCard extends StatelessWidget {
               const Spacer(),
               Container(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 14,
+                  horizontal: 12,
                   vertical: 8,
                 ),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [AppColors.honey, AppColors.gold],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
+                  color: AppColors.flameCoral.withAlpha(24),
                   borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+                  border: Border.all(color: AppColors.flameCoral.withAlpha(70)),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    const Icon(
+                      Icons.local_fire_department_rounded,
+                      color: AppColors.flameCoral,
+                      size: 16,
+                    ),
+                    const SizedBox(width: 4),
                     Text(
-                      'Inscribirse',
+                      event.embersSignupCost > 0
+                          ? '${event.embersSignupCost} Embers'
+                          : 'Ver detalle',
                       style: AppTypography.labelMedium.copyWith(
-                        color: AppColors.obsidian,
+                        color: AppColors.flameCoral,
                         fontFamily: 'Montserrat',
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    if (event.registrationFee.isNotEmpty) ...[
-                      const SizedBox(width: 6),
-                      Text(
-                        event.registrationFee,
-                        style: AppTypography.labelSmall.copyWith(
-                          color: AppColors.obsidian.withAlpha(180),
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
+                    const SizedBox(width: 4),
+                    Icon(
+                      Icons.chevron_right_rounded,
+                      color: AppColors.flameCoral.withAlpha(200),
+                      size: 18,
+                    ),
                   ],
                 ),
               ),
@@ -555,6 +568,8 @@ class _RaceCard extends StatelessWidget {
           ),
         ],
       ),
+    ),
+  ),
     );
   }
 }

@@ -113,9 +113,35 @@ class _EventCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                '+${event.xpReward} XP al completar',
-                style: AppTypography.labelMedium.copyWith(color: AppColors.gold),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '+${event.xpReward} XP al completar',
+                    style: AppTypography.labelMedium.copyWith(color: AppColors.gold),
+                  ),
+                  if (event.embersSignupCost > 0)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 2),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.local_fire_department_rounded,
+                            size: 12,
+                            color: AppColors.flameCoral,
+                          ),
+                          const SizedBox(width: 2),
+                          Text(
+                            '${event.embersSignupCost} Embers para unirte',
+                            style: AppTypography.labelSmall.copyWith(
+                              color: AppColors.flameCoral,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
               ),
               if (event.isRegistered)
                 Container(

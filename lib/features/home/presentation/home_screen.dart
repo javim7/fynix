@@ -9,10 +9,12 @@ import 'package:fynix/core/constants/app_spacing.dart';
 import 'package:fynix/core/constants/app_typography.dart';
 import 'package:fynix/core/dev/mock_data.dart';
 import 'package:fynix/core/dev/mock_user.dart';
+import 'package:fynix/core/widgets/activity_route_preview_strip.dart';
 import 'package:fynix/core/widgets/fynix_card.dart';
 import 'package:fynix/core/widgets/xp_bar.dart';
 import 'package:fynix/core/utils/xp_calculator.dart';
 import 'package:fynix/features/auth/domain/auth_notifier.dart';
+import 'package:fynix/features/offers/presentation/partner_offer_compact_card.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -320,6 +322,50 @@ class HomeScreen extends ConsumerWidget {
                 ).animate(delay: 150.ms).fadeIn(duration: 300.ms),
                 const SizedBox(height: AppSpacing.md),
 
+                // ── Beneficios (marcas aliadas) ─────────────────────────
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Beneficios', style: AppTypography.h4),
+                          const SizedBox(height: 2),
+                          Text(
+                            'Marcas aliadas para atletas',
+                            style: AppTypography.bodySmall.copyWith(
+                              color: AppColors.midGray,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () => context.push(Routes.offers),
+                      child: const Text('Ver todo'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: AppSpacing.sm),
+                SizedBox(
+                  height: 132,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: kMockPartnerOffers.length,
+                    separatorBuilder: (_, __) =>
+                        const SizedBox(width: AppSpacing.sm),
+                    itemBuilder: (context, i) {
+                      final o = kMockPartnerOffers[i];
+                      return PartnerOfferCompactCard(
+                        offer: o,
+                        onTap: () => context.push(Routes.offers),
+                      );
+                    },
+                  ),
+                ).animate(delay: 180.ms).fadeIn(duration: 300.ms),
+                const SizedBox(height: AppSpacing.md),
+
                 // ── Tu actividad reciente ──────────────────────────────
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -418,6 +464,17 @@ class _ActionButton extends StatelessWidget {
   }
 }
 
+Color _activityRouteAccent(String sport) {
+  switch (sport) {
+    case 'cycling':
+      return AppColors.flameCoral;
+    case 'swimming':
+      return AppColors.aiAccent;
+    default:
+      return AppColors.gold;
+  }
+}
+
 // ─── Friend activity card ─────────────────────────────────────────────────────
 class _FriendActivityCard extends StatefulWidget {
   const _FriendActivityCard({required this.activity});
@@ -475,6 +532,7 @@ class _FriendActivityCardState extends State<_FriendActivityCard> {
   Widget build(BuildContext context) {
     return FynixCard(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // ── Top row: avatar + info + XP ─────────────────────────────
           Row(
@@ -533,6 +591,13 @@ class _FriendActivityCardState extends State<_FriendActivityCard> {
               ),
             ],
           ),
+
+          if (widget.activity.hasRoutePreview) ...[
+            const SizedBox(height: AppSpacing.sm),
+            ActivityRoutePreviewStrip(
+              accentColor: _activityRouteAccent(widget.activity.sport),
+            ),
+          ],
 
           // ── Divider ──────────────────────────────────────────────────
           Padding(
@@ -641,35 +706,46 @@ class _ActivityCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FynixCard(
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: AppColors.primary.withAlpha(28),
-              borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
+          if (activity.hasRoutePreview) ...[
+            ActivityRoutePreviewStrip(
+              accentColor: _activityRouteAccent(activity.sport),
             ),
-            child: Icon(_icon, color: AppColors.gold, size: 22),
-          ),
-          const SizedBox(width: AppSpacing.md),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(activity.name, style: AppTypography.bodyMedium),
-                Text(
-                  '${activity.distanceKm.toStringAsFixed(1)} km · ${activity.durationMin} min · $_timeLabel',
-                  style: AppTypography.bodySmall,
+            const SizedBox(height: AppSpacing.sm),
+          ],
+          Row(
+            children: [
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withAlpha(28),
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
                 ),
-              ],
-            ),
-          ),
-          Text(
-            '+${activity.xpEarned} XP',
-            style: AppTypography.labelLarge.copyWith(
-              color: AppColors.xpGreen,
-            ),
+                child: Icon(_icon, color: AppColors.gold, size: 22),
+              ),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(activity.name, style: AppTypography.bodyMedium),
+                    Text(
+                      '${activity.distanceKm.toStringAsFixed(1)} km · ${activity.durationMin} min · $_timeLabel',
+                      style: AppTypography.bodySmall,
+                    ),
+                  ],
+                ),
+              ),
+              Text(
+                '+${activity.xpEarned} XP',
+                style: AppTypography.labelLarge.copyWith(
+                  color: AppColors.xpGreen,
+                ),
+              ),
+            ],
           ),
         ],
       ),

@@ -13,6 +13,8 @@ class FynixAvatar extends StatelessWidget {
     this.level,
     this.showLevelBadge = true,
     this.onTap,
+    /// Equipped Fénix / character preview on the profile photo (e.g. logo until 3D assets ship).
+    this.characterPreview,
   });
 
   final String? imageUrl;
@@ -24,9 +26,13 @@ class FynixAvatar extends StatelessWidget {
   final bool showLevelBadge;
   final VoidCallback? onTap;
 
+  /// Shown at the top-right of the profile circle; level badge stays bottom-right.
+  final Widget? characterPreview;
+
   @override
   Widget build(BuildContext context) {
     final badgeSize = size * 0.35;
+    final previewSize = (size * 0.42).clamp(34.0, 44.0);
 
     return GestureDetector(
       onTap: onTap,
@@ -38,6 +44,19 @@ class FynixAvatar extends StatelessWidget {
             displayName: displayName,
             size: size,
           ),
+          if (characterPreview != null)
+            Positioned(
+              top: -2,
+              right: -2,
+              child: SizedBox(
+                width: previewSize,
+                height: previewSize,
+                child: FittedBox(
+                  fit: BoxFit.contain,
+                  child: characterPreview,
+                ),
+              ),
+            ),
           if (showLevelBadge && level != null)
             Positioned(
               bottom: -4,
@@ -45,6 +64,54 @@ class FynixAvatar extends StatelessWidget {
               child: _LevelBadge(level: level!, size: badgeSize),
             ),
         ],
+      ),
+    );
+  }
+}
+
+/// Default “Fénix” character mark — swap for a 3D render or [Image.asset] when available.
+class PhoenixCharacterPreviewBadge extends StatelessWidget {
+  const PhoenixCharacterPreviewBadge({
+    super.key,
+    this.assetPath = 'assets/icons/fynixIcon3.png',
+    this.size = 40,
+  });
+
+  final String assetPath;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: 'Tu Fénix — personaje equipable',
+      child: Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: AppColors.darkEmber,
+          border: Border.all(color: AppColors.gold, width: 2),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.gold.withAlpha(45),
+              blurRadius: 10,
+              spreadRadius: 0,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        padding: const EdgeInsets.all(5),
+        child: ClipOval(
+          child: Image.asset(
+            assetPath,
+            fit: BoxFit.cover,
+            errorBuilder: (_, __, ___) => Icon(
+              Icons.local_fire_department_rounded,
+              color: AppColors.gold,
+              size: size * 0.5,
+            ),
+          ),
+        ),
       ),
     );
   }

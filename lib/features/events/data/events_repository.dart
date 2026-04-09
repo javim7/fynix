@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:fynix/core/models/race_event.dart';
+import 'package:fynix/core/utils/supabase_row.dart';
 
 part 'events_repository.g.dart';
 
@@ -22,7 +23,7 @@ class EventsRepository {
         .order('event_date');
 
     final events = (data as List)
-        .map((e) => RaceEvent.fromJson(e as Map<String, dynamic>))
+        .map((e) => raceEventFromSupabase(e as Map<String, dynamic>))
         .toList();
 
     if (userId == null) return events;
@@ -41,14 +42,15 @@ class EventsRepository {
     return events.map((e) {
       final reg = regMap[e.id];
       if (reg == null) return e;
+      final r = reg as Map<String, dynamic>;
       return e.copyWith(
         isRegistered: true,
-        isCompleted: reg['completed'] as bool,
-        registeredAt: DateTime.parse(reg['registered_at'] as String),
-        completedAt: reg['completed_at'] != null
-            ? DateTime.parse(reg['completed_at'] as String)
+        isCompleted: r['completed'] as bool? ?? false,
+        registeredAt: DateTime.parse(r['registered_at'] as String),
+        completedAt: r['completed_at'] != null
+            ? DateTime.parse(r['completed_at'] as String)
             : null,
-        finishTimeSeconds: reg['finish_time_seconds'] as int?,
+        finishTimeSeconds: r['finish_time_seconds'] as int?,
       );
     }).toList();
   }
@@ -60,7 +62,7 @@ class EventsRepository {
         .eq('id', eventId)
         .single();
 
-    var event = RaceEvent.fromJson(data as Map<String, dynamic>);
+    var event = raceEventFromSupabase(data as Map<String, dynamic>);
 
     if (userId != null) {
       final reg = await _client
@@ -71,9 +73,10 @@ class EventsRepository {
           .maybeSingle();
 
       if (reg != null) {
-        event = event.copyWith(
-          isRegistered: true,
-          isCompleted: (reg as Map<String, dynamic>)['completed'] as bool,
+        final m = reg as Map<String, dynamic>;
+        event = raceEventFromSupabase(
+          data as Map<String, dynamic>,
+          registration: m,
         );
       }
     }
@@ -85,10 +88,18 @@ class EventsRepository {
     required String userId,
     required String eventId,
   }) async {
-    await _client.from('user_event_registrations').insert({
-      'user_id': userId,
-      'event_id': eventId,
-    });
+    try {
+      final res =
+          await _client.rpc('join_event_challenge', params: {'p_event_id': eventId});
+      if (res is Map && res['ok'] != true) {
+        throw Exception(res['error'] ?? 'join_failed');
+      }
+    } catch (_) {
+      await _client.from('user_event_registrations').insert({
+        'user_id': userId,
+        'event_id': eventId,
+      });
+    }
   }
 
   Future<void> unregisterFromEvent({

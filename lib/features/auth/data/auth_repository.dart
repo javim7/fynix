@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:fynix/core/models/user_profile.dart';
+import 'package:fynix/core/utils/supabase_row.dart';
 
 part 'auth_repository.g.dart';
 
@@ -69,7 +70,7 @@ class AuthRepository {
         .eq('id', userId)
         .single();
 
-    return UserProfile.fromJson(data);
+    return userProfileFromSupabase(Map<String, dynamic>.from(data));
   }
 
   /// Stream of auth state changes.
